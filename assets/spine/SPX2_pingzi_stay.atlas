@@ -1,0 +1,27 @@
+
+SPX2_pingzi_stay.png
+size: 128,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+s2_lv1_1
+  rotate: false
+  xy: 2, 94
+  size: 87, 27
+  orig: 87, 27
+  offset: 0, 0
+  index: -1
+s2_lv1_2
+  rotate: false
+  xy: 2, 65
+  size: 88, 27
+  orig: 88, 27
+  offset: 0, 0
+  index: -1
+s2_lv1_3
+  rotate: false
+  xy: 2, 2
+  size: 88, 61
+  orig: 88, 69
+  offset: 0, 0
+  index: -1

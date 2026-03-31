@@ -1,0 +1,41 @@
+
+SPX2_pingzi.png
+size: 512,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+s2_lv1_1
+  rotate: true
+  xy: 441, 37
+  size: 87, 27
+  orig: 87, 27
+  offset: 0, 0
+  index: -1
+s2_lv1_2
+  rotate: false
+  xy: 370, 7
+  size: 88, 27
+  orig: 88, 27
+  offset: 0, 0
+  index: -1
+s2_lv1_3
+  rotate: true
+  xy: 370, 36
+  size: 88, 69
+  orig: 88, 69
+  offset: 0, 0
+  index: -1
+ui_pz1
+  rotate: true
+  xy: 2, 2
+  size: 122, 366
+  orig: 122, 366
+  offset: 0, 0
+  index: -1
+ui_pz2
+  rotate: true
+  xy: 470, 56
+  size: 68, 8
+  orig: 68, 8
+  offset: 0, 0
+  index: -1
