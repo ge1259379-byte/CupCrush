@@ -9,28 +9,29 @@ export class Main extends Component {
     cups: Cup[] = [];
     @property(Label)
     congratulationsLabel: Label = null;
-    private firstChoosedCup: number = -1;
+    private _firstChoosedCup: number = -1;
     start() {
         this.onClickReset();
     }
     /** 点击杯子 */
     onClickCup(event: Event, customEventData: string, sectionColorIds: number[]) {
         console.log(event.target.parent.name, customEventData, sectionColorIds);
-        if (this.firstChoosedCup !== -1
-            && (Number(customEventData) === this.firstChoosedCup
-                || this.cups[this.firstChoosedCup].sectionColorIds.length === 0
+        if (this._firstChoosedCup !== -1
+            && (Number(customEventData) === this._firstChoosedCup
+                || this.cups[this._firstChoosedCup].sectionColorIds.length === 0
                 || this.cups[Number(customEventData)].sectionColorIds.length === SkeletonAniSlots.length
             )) {
             //自己和自己/自己空杯/对方满杯 不能交换
+            this._firstChoosedCup = -1;
             return;
         }
-        if (this.firstChoosedCup === -1) {
+        if (this._firstChoosedCup === -1) {
             if (this.cups[Number(customEventData)].sectionColorIds.length === 0) {
                 return;
             }
-            this.firstChoosedCup = Number(customEventData);
+            this._firstChoosedCup = Number(customEventData);
         } else {
-            const firstCupSectionColorIds = this.cups[this.firstChoosedCup].sectionColorIds;
+            const firstCupSectionColorIds = this.cups[this._firstChoosedCup].sectionColorIds;
             const secondCupSectionColorIds = this.cups[Number(customEventData)].sectionColorIds;
             if (firstCupSectionColorIds[firstCupSectionColorIds.length - 1]
                 === secondCupSectionColorIds[secondCupSectionColorIds.length - 1]
@@ -46,13 +47,13 @@ export class Main extends Component {
                     }
                 }
                 if (selfTotalColorId.length !== 0) {
-                    this.cups[this.firstChoosedCup].pourWater(this.firstChoosedCup > Number(customEventData), 
-                    selfTotalColorId.slice(0, SkeletonAniSlots.length - secondCupSectionColorIds.length),
-                    Math.abs(Number(customEventData) - this.firstChoosedCup));
+                    this.cups[this._firstChoosedCup].pourWater(this._firstChoosedCup > Number(customEventData),
+                        selfTotalColorId.slice(0, SkeletonAniSlots.length - secondCupSectionColorIds.length),
+                        Math.abs(Number(customEventData) - this._firstChoosedCup));
                     this.cups[Number(customEventData)].riseWater(selfTotalColorId.slice(0, SkeletonAniSlots.length - secondCupSectionColorIds.length));
                 }
             }
-            this.firstChoosedCup = -1;
+            this._firstChoosedCup = -1;
         }
     }
     /** 点击重置此局游戏 */

@@ -89,6 +89,7 @@ export class Cup extends Component {
             console.warn("颜色数量超过水瓶可显示的最大颜色数量，将只显示前" + (SkeletonAniSlots.length - this.sectionColorIds.length) + "层颜色");
             sectionColorIds = sectionColorIds.slice(0, SkeletonAniSlots.length - this.sectionColorIds.length);
         }
+
         const trackEntry = this.riseSke.setAnimation(0, SkeletonAniType.Rise, false);
         trackEntry.trackTime = 0.2 * this.sectionColorIds.length;
         // 从当前水位开始表现水面上升动画
@@ -102,37 +103,32 @@ export class Cup extends Component {
     private _riseAniEventListener(x: sp.spine.TrackEntry, ev: sp.spine.Event) {
         switch (ev.data.name) {
             case RiseSkeAniEventName.EightyPencent:
-                this._setSlotColor(this.sectionColorIds.slice(0, 4), this.riseSke);
-                this._setSlotColor(this.sectionColorIds.slice(0, 4), this.leftRightPourSke);
-                if(this.sectionColorIds.length === 4){
-                    this._riseAniEnd();
-                }
                 break;
             case RiseSkeAniEventName.SixtyPencent:
-                this._setSlotColor(this.sectionColorIds.slice(0, 3), this.riseSke);
-                this._setSlotColor(this.sectionColorIds.slice(0, 3), this.leftRightPourSke);
-                if(this.sectionColorIds.length === 3){
+                this._setSlotColor(this.sectionColorIds.slice(0, 4), this.riseSke);
+                this._setSlotColor(this.sectionColorIds.slice(0, 4), this.leftRightPourSke);
+                if (this.sectionColorIds.length === 3) {
                     this._riseAniEnd();
                 }
                 break;
             case RiseSkeAniEventName.FortyPencent:
-                this._setSlotColor(this.sectionColorIds.slice(0, 2), this.riseSke);
-                this._setSlotColor(this.sectionColorIds.slice(0, 2), this.leftRightPourSke);
-                if(this.sectionColorIds.length === 2){
+                this._setSlotColor(this.sectionColorIds.slice(0, 3), this.riseSke);
+                this._setSlotColor(this.sectionColorIds.slice(0, 3), this.leftRightPourSke);
+                if (this.sectionColorIds.length === 2) {
                     this._riseAniEnd();
                 }
                 break;
             case RiseSkeAniEventName.TwentyPencent:
-                this._setSlotColor(this.sectionColorIds.slice(0, 1), this.riseSke);
-                this._setSlotColor(this.sectionColorIds.slice(0, 1), this.leftRightPourSke);
-                if(this.sectionColorIds.length === 1){
+                this._setSlotColor(this.sectionColorIds.slice(0, 2), this.riseSke);
+                this._setSlotColor(this.sectionColorIds.slice(0, 2), this.leftRightPourSke);
+                if (this.sectionColorIds.length === 1) {
                     this._riseAniEnd();
                 }
                 break;
             case RiseSkeAniEventName.ZeroPencent:
-                this._setSlotColor(this.sectionColorIds.slice(0, 0), this.riseSke);
-                this._setSlotColor(this.sectionColorIds.slice(0, 0), this.leftRightPourSke);
-                if(this.sectionColorIds.length === 0){
+                this._setSlotColor(this.sectionColorIds.slice(0, 1), this.riseSke);
+                this._setSlotColor(this.sectionColorIds.slice(0, 1), this.leftRightPourSke);
+                if (this.sectionColorIds.length === 0) {
                     this._riseAniEnd();
                 }
                 break;
@@ -146,8 +142,8 @@ export class Cup extends Component {
         this.riseSke.timeScale = 0;
     }
     /** 对准瓶嘴倒水 */
-    private _pourAniPostionTween(isLeft: boolean, isUp: boolean,duration: number,gap: number) {
-        const offsetX = 150 + (gap-1) * 300;
+    private _pourAniPostionTween(isLeft: boolean, isUp: boolean, duration: number, gap: number) {
+        const offsetX = 150 + (gap - 1) * 300;
         const offsetY = 20;
         tween(this.node).by(duration, { position: new Vec3(isLeft ? -offsetX : offsetX, isUp ? offsetY : -offsetY, 0) }).start();
     }
@@ -156,7 +152,7 @@ export class Cup extends Component {
      * @param isLeft 是否向左倒水
      * @param sectionColorIds 需要倒掉的颜色id
      */
-    pourWater(isLeft: boolean, sectionColorIds: number[],gap: number) {
+    pourWater(isLeft: boolean, sectionColorIds: number[], gap: number) {
         if (sectionColorIds.length === 0) {
             return;
         }
@@ -166,14 +162,14 @@ export class Cup extends Component {
         this.riseSke.node.active = false;
         this.leftRightPourSke.node.active = true;
         const leftLength = this.sectionColorIds.length - sectionColorIds.length;
-        this._pourAniPostionTween(isLeft, true,0.5,gap);
+        this._pourAniPostionTween(isLeft, true, 0.5, gap);
         this.leftRightPourSke.setAnimation(0, isLeft ? SkeletonAniType.LeftPour : SkeletonAniType.RightPour, false);
         this.leftRightPourSke.setEventListener((x: sp.spine.TrackEntry, ev: sp.spine.Event) => {
-            this._pourAniEventListener(x, ev, leftLength, isLeft,gap);
+            this._pourAniEventListener(x, ev, leftLength, isLeft, gap);
         });
     }
     /** 倒水过程中需要一层一层消失水的颜色 */
-    private _pourAniEventListener(x: sp.spine.TrackEntry, ev: sp.spine.Event, leftLength: number, isLeft: boolean,gap: number) {
+    private _pourAniEventListener(x: sp.spine.TrackEntry, ev: sp.spine.Event, leftLength: number, isLeft: boolean, gap: number) {
         switch (ev.data.name) {
             case PourSkeAniEventName.HundredPencent:
                 break;
@@ -184,7 +180,7 @@ export class Cup extends Component {
                 this._setSlotColor(this.sectionColorIds, this.riseSke);
                 this._setSlotColor(this.sectionColorIds, this.leftRightPourSke);
                 if (leftLength === 3) {
-                    this._pourAniEnd(isLeft,gap);
+                    this._pourAniEnd(isLeft, gap);
                 }
                 break;
             case PourSkeAniEventName.FortyPencent:
@@ -192,7 +188,7 @@ export class Cup extends Component {
                 this._setSlotColor(this.sectionColorIds, this.riseSke);
                 this._setSlotColor(this.sectionColorIds, this.leftRightPourSke);
                 if (leftLength === 2) {
-                    this._pourAniEnd(isLeft,gap);
+                    this._pourAniEnd(isLeft, gap);
                 }
                 break;
             case PourSkeAniEventName.TwentyPencent:
@@ -200,7 +196,7 @@ export class Cup extends Component {
                 this._setSlotColor(this.sectionColorIds, this.riseSke);
                 this._setSlotColor(this.sectionColorIds, this.leftRightPourSke);
                 if (leftLength === 1) {
-                    this._pourAniEnd(isLeft,gap);
+                    this._pourAniEnd(isLeft, gap);
                 }
                 break;
             case PourSkeAniEventName.ZeroPencent:
@@ -208,7 +204,7 @@ export class Cup extends Component {
                 this._setSlotColor(this.sectionColorIds, this.riseSke);
                 this._setSlotColor(this.sectionColorIds, this.leftRightPourSke);
                 if (leftLength === 0) {
-                    this._pourAniEnd(isLeft,gap);
+                    this._pourAniEnd(isLeft, gap);
                 }
                 break;
             default:
@@ -216,7 +212,7 @@ export class Cup extends Component {
         }
     }
     /** 倒完水后需要反向播放动画，摆回杯子 */
-    private _pourAniEnd(isLeft: boolean,gap: number) {
+    private _pourAniEnd(isLeft: boolean, gap: number) {
         this.leftRightPourSke.setEventListener(null);
         // 2. 取当前轨道上的动画
         const state = this.leftRightPourSke.getCurrent(0);
@@ -225,7 +221,7 @@ export class Cup extends Component {
         const duration = 0.8; // 根据实际 left/right 动画时长来填
         state.trackTime = duration;
         state.timeScale = -3;
-        this._pourAniPostionTween(!isLeft, false,0.25,gap);
+        this._pourAniPostionTween(!isLeft, false, 0.25, gap);
         this.scheduleOnce(() => {
             if (!this.isValid) {
                 return;
